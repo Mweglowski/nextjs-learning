@@ -62,7 +62,7 @@
   height: 100%;
   filter: blur(100px) saturate(150%);
   top: 80px;
-  opacity: 0.15;
+  opacity: 0.3;
 }
 
 @media screen and (max-width: 640px) {
@@ -90,7 +90,7 @@
 }
 
 .orange_gradient {
-  @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-blue-500 via-green-600 to-red-500 bg-clip-text text-transparent;
 }
 
 .green_gradient {
