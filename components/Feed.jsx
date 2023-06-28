@@ -34,7 +34,6 @@ const Feed = () => {
       setPosts(data);
     };
 
-    
     fetchPosts();
   }, []);
 
