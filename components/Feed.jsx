@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
 
 const PromptCardList = ({ data, handleTagClick }) => {
-  console.log(data)
-
   return (
     <div className="mt-16 prompt_layout">
       {data.map((post) => (
@@ -22,16 +20,38 @@ const PromptCardList = ({ data, handleTagClick }) => {
 
 const Feed = () => {
   const [searchText, setSearchText] = useState("");
-  const [posts, setPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState([]);
+  const [currentPosts, setCurrentPosts] = useState([]);
 
-  const handleSearchChange = (e) => {};
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+
+    if (e.target.value === "") {
+      setTimeout(() => {
+        setCurrentPosts(allPosts);
+      }, 500);
+    }
+
+    const filteredPosts = allPosts.filter(
+      (p) =>
+        p.prompt.indexOf(e.target.value) > -1 ||
+        p.creator.username.indexOf(e.target.value) > -1 ||
+        p.creator.email.indexOf(e.target.value) > -1 ||
+        p.tag.indexOf(e.target.value) > -1
+    );
+
+    setTimeout(() => {
+      setCurrentPosts(filteredPosts);
+    }, 500);
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch("/api/prompt");
       const data = await response.json();
 
-      setPosts(data);
+      setCurrentPosts(data);
+      setAllPosts(data);
     };
 
     fetchPosts();
@@ -42,7 +62,7 @@ const Feed = () => {
       <form className="relative w-full flex-center">
         <input
           type="text"
-          placeholder="Search fro a tag or a username"
+          placeholder="Search for a tag or a username"
           value={searchText}
           onChange={handleSearchChange}
           required
@@ -50,7 +70,7 @@ const Feed = () => {
         />
       </form>
 
-      <PromptCardList data={posts} handleTagClick={() => {}} />
+      <PromptCardList data={currentPosts} handleTagClick={() => {}} />
     </section>
   );
 };
